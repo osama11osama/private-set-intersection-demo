@@ -9,6 +9,10 @@ class Receiver:
         self.crs = crs
         self.Sr = Sr
 
+
+    #1- we shuld have a function that generate random n prime
+    #2- we have to finde a generator of an RSA modulu
+    #3- we schuold have function that hashes the the receiver input (compute h) using the primes and the generator
     def hashReceiver(self):
         # """
         # :param self: crs string which is composed of an RSA modulus N = PQ,
