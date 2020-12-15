@@ -1,5 +1,6 @@
 from utils import *
-from fuzzy_extractor import FuzzyExtractor
+import hmac
+import hashlib
 
 LIST_INDEX = 1
 
@@ -23,6 +24,12 @@ class Sender:
         s = getRandom(N)
         f = g ** (Roh * primes[self.w + 1])
         hRoh = self.h ** Roh
-        Ext = FuzzyExtractor(s, hRoh)
+        #######################
+        sByte = s.to_bytes(2, byteorder='big')
+        msg = hRoh.to_bytes(2, byteorder='big')
+        h = hmac.new(sByte, b'', hashlib.sha3_256)
+        h.update(msg)
+        Ext = h.hexdigest()
+        ########################
         result = [s, f, Ext]
         return result

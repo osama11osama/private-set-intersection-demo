@@ -1,6 +1,7 @@
 import math
 from utils import *
-from fuzzy_extractor import FuzzyExtractor
+import hmac
+import hashlib
 
 
 class Receiver:
@@ -48,6 +49,12 @@ class Receiver:
                 primes.append(i)
         product = math.prod(primes)
         secArg = f ** (r * product)
-        extractor = FuzzyExtractor(s, secArg)
+        #############################
+        sByte = s.to_bytes(2, byteorder='big')
+        msg = secArg.to_bytes(2, byteorder='big')
+        Hmac = hmac.new(sByte, b'', hashlib.sha3_256)
+        Hmac.update(msg)
+        extractor = Hmac.hexdigest()
+        ##############################
         if extractor == R:
             return i
