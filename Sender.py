@@ -13,7 +13,6 @@ class Sender:
 
     def computeSender(self):
         """
-
         :return: returns a list composed of s, f, Ext
         """
         tmp = self.crs.split(' ')
