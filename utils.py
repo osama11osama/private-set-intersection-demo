@@ -1,11 +1,10 @@
-import random
+from numpy import *
 from sympy import *
 from Crypto.Hash import HMAC, SHA256
 
 
-def getRandom(greatestElement):
-    systemRandom = random.SystemRandom()
-    randomNumber = systemRandom.randint(1, greatestElement)
+def getRandom(seed):
+    randomNumber = random.randint(1, seed)
     return randomNumber
 
 
@@ -35,9 +34,9 @@ def prf(secretKey, elementsSet):
     return res
 
 
-def generate_crs(N, l):
+def generate_crs(N, key, eSet):
     g = findGenerator(N)
-    distinct_Primes = prf(l)
+    distinct_Primes = prf(key, eSet)
     crs = str(N) + ' ' + str(g)
     for i in range(0, len(distinct_Primes)):
         crs = crs + ' ' + str(distinct_Primes[i])

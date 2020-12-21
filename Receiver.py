@@ -1,50 +1,27 @@
-import math
 from utils import *
 import hashlib
 
 
 class Receiver:
 
-    def __init__(self, crs, Sr):
-        self.crs = crs
+    def __init__(self, secretKey, g, N, Sr):
+        self.N = N
         self.Sr = Sr
+        self.secretKey = secretKey
+        self.g = g
 
-    # 1- we should have a function that generate random n prime
-    # 2- we have to find a generator of an RSA module
-    # 3- we should have function that hashes the the receiver input (compute h) using the primes and the generator
     def hashReceiver(self):
-        # """
-        # :param self: crs string which is composed of an RSA modulus N = PQ,
-        #             a uniformly random generator g ∈ ZN
-        #             and pairwise distinct primes p1,....pl.
-        # :return: hashed value of receiver h and random r
-        # """
-
-        primes = []
-        tmp = self.crs.split(' ')
-        N = int(tmp[0])
-        g = int(tmp[1])
-        primesT = list(map(int, tmp[2:]))
-        r = getRandom(N)
-        for i in self.Sr:
-            if i in primesT:
-                primes.append(i)
-        product = math.prod(primes)
-        h = g ** (r * product)
+        primesT = prf(self.secretKey, self.Sr)
+        r = getRandom(self.N)
+        product = math.prod(primesT)
+        h = self.g ** (r * product)
         res = [h, r]
         return res
 
-    def checkIntersection(self, s, f, r, i, R):
-        primes = []
-        tmp = list(self.Sr)
+    def checkIntersection(self, s, f, R, i, r):
+        tmp = self.Sr
         tmp.pop(i)
-
-        tmpP = self.crs.split(' ')
-        primesT = list(map(int, tmpP[2:]))
-
-        for i in tmp:
-            if i in primesT:
-                primes.append(i)
+        primes = prf(self.secretKey, tmp)
         product = math.prod(primes)
         secArg = f ** (r * product)
         #############################

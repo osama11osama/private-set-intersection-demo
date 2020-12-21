@@ -1,26 +1,25 @@
 from utils import *
 import hashlib
 
-LIST_INDEX = 1
-
 
 class Sender:
-    def __init__(self, crs, w, h):
-        self.crs = crs
+    def __init__(self, secretKey, N, g, w, h, r):
+        self.N = N
         self.w = w
         self.h = h
+        self.g = g
+        self.secretKey = secretKey
+        self.r = r
 
     def computeSender(self):
         """
+
         :return: returns a list composed of s, f, Ext
         """
-        tmp = self.crs.split(' ')
-        N = int(tmp[0])
-        g = int(tmp[1])
-        primes = list(map(int, tmp[2:]))
+        primes = prf(self.secretKey, [w])
         Roh = getRandom(N)
         s = getRandom(N)
-        f = g ** (Roh * primes[self.w + 1])
+        f = self.g ** (Roh * primes[0])
         hRoh = self.h ** Roh
         #######################
         sByte = str(s).encode('utf-8')
@@ -29,5 +28,5 @@ class Sender:
         h.update(msg + sByte)
         Ext = int(h.hexdigest(), 16)
         ########################
-        result = [s, f, Ext]
+        result = [s, f, Ext, self.r]
         return result
