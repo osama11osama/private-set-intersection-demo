@@ -1,5 +1,4 @@
 from utils import *
-import hmac
 import hashlib
 
 LIST_INDEX = 1
@@ -24,11 +23,11 @@ class Sender:
         f = g ** (Roh * primes[self.w + 1])
         hRoh = self.h ** Roh
         #######################
-        sByte = s.to_bytes(2, byteorder='big')
-        msg = hRoh.to_bytes(2, byteorder='big')
-        h = hmac.new(sByte, b'', hashlib.sha3_256)
-        h.update(msg)
-        Ext = h.hexdigest()
+        sByte = str(s).encode('utf-8')
+        msg = str(hRoh).encode('utf-8')
+        h = hashlib.sha3_256()
+        h.update(msg + sByte)
+        Ext = int(h.hexdigest(), 16)
         ########################
         result = [s, f, Ext]
         return result

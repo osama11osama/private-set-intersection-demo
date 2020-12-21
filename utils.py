@@ -1,6 +1,6 @@
 import random
-
 from sympy import *
+from Crypto.Hash import HMAC, SHA256
 
 
 def getRandom(greatestElement):
@@ -23,44 +23,23 @@ def findGenerator(N):
     return random.choice(list)
 
 
-def prf(greatestIndex):
-    """
-    TODO
-    what should be the universeSize ?
-
-    prf function returns the Universes U as a list
-
-    seed will be the size limit of the set of primes
-    """
-    size = getRandom(greatestIndex)
+def prf(secretKey, elementsSet):
     res = []
-    size += 1
-    for i in range(1, size):
-        tmp = getRandom(greatestIndex)
-        tmpP = prime(tmp)
-        if tmpP not in res:
-            res.append(tmpP)
-        else:
-            size += 1
+    secretKeyByte = str(secretKey).encode('utf-8')
+    HMac = HMAC.new(secretKeyByte, digestmod=SHA256)
+    for i in elementsSet:
+        element = str(i).encode('utf-8')
+        HMac.update(element)
+        pr = nextprime(int(HMac.hexdigest(), 16))
+        res.append(pr)
     return res
 
 
-def getRandomFromList(l):
-    return l[getRandom(len(l)) - 1]
-
-
-def generat_crs(N, l):
-    g = Random_generators(N)
+def generate_crs(N, l):
+    g = findGenerator(N)
     distinct_Primes = prf(l)
     crs = str(N) + ' ' + str(g)
     for i in range(0, len(distinct_Primes)):
         crs = crs + ' ' + str(distinct_Primes[i])
 
     return crs
-
-
-def test_generator(g, number, size):
-    l = {0}
-    for i in range(size):
-        l.add(g ** i % number)
-    print(l)

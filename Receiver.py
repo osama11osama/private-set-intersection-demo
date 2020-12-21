@@ -1,6 +1,5 @@
 import math
 from utils import *
-import hmac
 import hashlib
 
 
@@ -49,11 +48,11 @@ class Receiver:
         product = math.prod(primes)
         secArg = f ** (r * product)
         #############################
-        sByte = s.to_bytes(2, byteorder='big')
-        msg = secArg.to_bytes(2, byteorder='big')
-        Hmac = hmac.new(sByte, b'', hashlib.sha3_256)
-        Hmac.update(msg)
-        extractor = Hmac.hexdigest()
+        sByte = str(s).encode('utf-8')
+        msg = str(secArg).encode('utf-8')
+        ha = hashlib.sha3_256()
+        ha.update(msg + sByte)
+        extractor = int(ha.hexdigest(), 16)
         ##############################
         if extractor == R:
             return i
