@@ -1,7 +1,7 @@
 from numpy import *
 from sympy import *
 from Crypto.Hash import HMAC, SHA256
-
+from cryptohash import sha256
 
 def getRandom(seed):
     randomNumber = random.randint(1, seed)
