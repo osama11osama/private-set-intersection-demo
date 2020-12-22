@@ -9,21 +9,24 @@ class Receiver:
         self.Sr = Sr
         self.secretKey = secretKey
         self.g = g
+        self.r = 0
 
     def hashReceiver(self):
         primesT = prf(self.secretKey, self.Sr)
         r = getRandom(self.N)
         product = math.prod(primesT)
-        h = self.g ** (r * product)
-        res = [h, r]
-        return res
+        a = r * product
+        tmp = self.g
+        h = int(tmp) ** int(a)
+        self.r = r
+        return h
 
-    def checkIntersection(self, s, f, R, i, r):
+    def checkIntersection(self, s, f, R, i):
         tmp = self.Sr
         tmp.pop(i)
         primes = prf(self.secretKey, tmp)
         product = math.prod(primes)
-        secArg = f ** (r * product)
+        secArg = f ** (self.r * product)
         #############################
         sByte = str(s).encode('utf-8')
         msg = str(secArg).encode('utf-8')

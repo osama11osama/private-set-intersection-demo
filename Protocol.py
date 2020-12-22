@@ -1,16 +1,25 @@
 from utils import *
 from Receiver import *
 from Sender import *
+import time
 
-a = generat_crs(10, 15)
+
+def getSecretKey():
+    ran = getRandom(1000)
+    return ran
+
+
+def protocol():
+    p = 5
+    q = 3
+    N = p * q
+    g = findGenerator(N)
+    sKey = getSecretKey()
+    receiver = Receiver(sKey, g, N, [13, 21, 2])
+    tmp = receiver.hashReceiver()
+    return tmp
+
+
+a = protocol()
 print(a)
 
-re = Receiver(a, [2, 3, 4])
-t = re.hashReceiver()
-
-se = Sender(a, [3], t[0])
-x = se.computeSender()
-
-for i in range(0, 3):
-    y = re.checkIntersection(x[0], x[1], x[2], 1, t[1])
-    print(y)

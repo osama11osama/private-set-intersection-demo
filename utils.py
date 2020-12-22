@@ -29,16 +29,8 @@ def prf(secretKey, elementsSet):
     for i in elementsSet:
         element = str(i).encode('utf-8')
         HMac.update(element)
-        pr = nextprime(int(HMac.hexdigest(), 16))
+        tmp = int(HMac.hexdigest(), 16)
+        tmp2 = (tmp / (10 ** 75))  # make hashing smaller for temporary
+        pr = nextprime(tmp2)
         res.append(pr)
     return res
-
-
-def generate_crs(N, key, eSet):
-    g = findGenerator(N)
-    distinct_Primes = prf(key, eSet)
-    crs = str(N) + ' ' + str(g)
-    for i in range(0, len(distinct_Primes)):
-        crs = crs + ' ' + str(distinct_Primes[i])
-
-    return crs
