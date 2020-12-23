@@ -14,19 +14,21 @@ class Receiver:
     def hashReceiver(self):
         primesT = prf(self.secretKey, self.Sr)
         r = getRandom(self.N)
-        product = math.prod(primesT)
-        a = r * product
-        tmp = self.g
-        h = int(tmp) ** int(a)
+        tmp = pow(int(self.g), r, self.N)
+        for i in primesT:
+            tmp = pow(tmp, i, self.N)
+        h = tmp
         self.r = r
         return h
 
-    def checkIntersection(self, s, f, R, i):
-        tmp = self.Sr
-        tmp.pop(i)
-        primes = prf(self.secretKey, tmp)
-        product = math.prod(primes)
-        secArg = f ** (self.r * product)
+    def checkIntersection(self, s, f, R, i, primesI):
+        reV = primesI[i]
+        del primesI[i]
+        tmp = pow(f, self.r, self.N)
+        for j in primesI:
+            tmp = pow(tmp, j, self.N)
+        secArg = tmp
+        primesI.insert(i, reV)
         #############################
         sByte = str(s).encode('utf-8')
         msg = str(secArg).encode('utf-8')
@@ -34,5 +36,8 @@ class Receiver:
         ha.update(msg + sByte)
         extractor = int(ha.hexdigest(), 16)
         ##############################
+        print("ext:", extractor)
         if extractor == R:
-            return i
+            print("There is an intersection with index:", i)
+        else:
+            print("No intersection with index", i)
