@@ -32,6 +32,6 @@ def prf(secretKey, elementsSet):
         HMac.update(element)
         tmp = int(HMac.hexdigest(), 16)
         tmp2 = (tmp / (10 ** 75))  # make hashing smaller for temporary
-        pr = nextprime(tmp2)
+        pr = nextprime(tmp)
         res.append(pr)
     return res
