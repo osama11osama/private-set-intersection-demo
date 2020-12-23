@@ -1,6 +1,7 @@
 from numpy import *
 from sympy import *
-from Crypto.Hash import HMAC, SHA256
+from Crypto.Hash import HMAC, SHA256, MD5
+import hmac
 from cryptohash import sha256
 
 def getRandom(seed):
@@ -25,7 +26,9 @@ def findGenerator(N):
 def prf(secretKey, elementsSet):
     res = []
     secretKeyByte = str(secretKey).encode('utf-8')
-    HMac = HMAC.new(secretKeyByte, digestmod=SHA256)
+    #Hmac = hmac.new(secretKeyByte)
+    HMac = HMAC.new(secretKeyByte, digestmod=MD5)
+    #HMac = HMAC.new(secretKeyByte, digestmod=SHA256)
     for i in elementsSet:
         element = str(i).encode('utf-8')
         HMac.update(element)

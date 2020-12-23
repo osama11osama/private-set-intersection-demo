@@ -10,11 +10,14 @@ class Receiver:
         self.secretKey = secretKey
         self.g = g
 
+    """Generating primes using PRF and then compute the hash value h """
     def hashReceiver(self):
-        primesT = prf(self.secretKey, self.Sr)
+        print("you are Now in hashReceiver")
+        PRF_Primes_List = prf(self.secretKey, self.Sr)
+        print("the PRF primes for Sr are :", PRF_Primes_List)
         r = getRandom(self.N)
-        product = math.prod(primesT)
-        h = self.g ** (r * product)
+        primesProd = math.prod(PRF_Primes_List)
+        h = self.g ** (r * primesProd)
         res = [h, r]
         return res
 
@@ -22,8 +25,8 @@ class Receiver:
         tmp = self.Sr
         tmp.pop(i)
         primes = prf(self.secretKey, tmp)
-        product = math.prod(primes)
-        secArg = f ** (r * product)
+        primesProd = math.prod(primes)
+        secArg = f ** (r * primesProd)
         #############################
         sByte = str(s).encode('utf-8')
         msg = str(secArg).encode('utf-8')
