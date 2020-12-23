@@ -1,25 +1,29 @@
 from utils import *
 from Receiver import *
 from Sender import *
-import time
-
-
-def getSecretKey():
-    ran = getRandom(1000)
-    return ran
 
 
 def protocol():
     p = 5
-    q = 3
+    q = 17
     N = p * q
     g = findGenerator(N)
-    sKey = getSecretKey()
-    receiver = Receiver(sKey, g, N, [13, 21, 2])
-    tmp = receiver.hashReceiver()
-    return tmp
+    sKey = getRandom(100)
+    receiver = Receiver(sKey, g, N, [13, 3, 5])  # [13, 3, 5] is Sr input
+    h = receiver.hashReceiver()
+    print("h =", h)
+    sen = Sender(sKey, N, g, 5, h)  # 2 is Ss input
+    send = sen.computeSender()
+    print("s =", send[0])
+    print("f =", send[1])
+    print("R =", send[2], "\n")
+    primesI = prf(sKey, [13, 3, 5])  # [13, 3, 5] is Sr input
+    li = len(primesI)
+    x = 0
+    while x != li:
+        receiver.checkIntersection(send[0], send[1], send[2], x, primesI)
+        x += 1
+    return 0
 
 
-a = protocol()
-print(a)
-
+protocol()
