@@ -25,12 +25,11 @@ def findGenerator(N):
 def prf(secretKey, elementsSet):
     res = []
     secretKeyByte = str(secretKey).encode('utf-8')
-    HMac = HMAC.new(secretKeyByte, digestmod=SHA256)
     for i in elementsSet:
+        HMac = HMAC.new(secretKeyByte, digestmod=SHA256)
         element = str(i).encode('utf-8')
         HMac.update(element)
         tmp = int(HMac.hexdigest(), 16)
-        tmp2 = (tmp / (10 ** 75))  # make hashing smaller for temporary
-        pr = nextprime(tmp2)
+        pr = nextprime(tmp)
         res.append(pr)
     return res
