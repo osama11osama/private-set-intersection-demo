@@ -36,8 +36,7 @@ class Receiver:
         ha.update(msg + sByte)
         extractor = int(ha.hexdigest(), 16)
         ##############################
-        print("ext:", extractor)
         if extractor == R:
             print("There is an intersection with index:", i)
         else:
-            print("No intersection with index", i)
+            print("No intersection with index:", i)

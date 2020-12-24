@@ -9,15 +9,16 @@ def protocol():
     N = p * q
     g = findGenerator(N)
     sKey = getRandom(100)
-    receiver = Receiver(sKey, g, N, [13, 3, 5])  # [13, 3, 5] is Sr input
+    print("Enter the receiver elements separated by space:")
+    recInput = input()
+    recIn = list(map(int, recInput.split()))
+    receiver = Receiver(sKey, g, N, recIn)
     h = receiver.hashReceiver()
-    print("h =", h)
-    sen = Sender(sKey, N, g, 5, h)  # 2 is Ss input
+    print("Enter the sender element:")
+    senInput = input()
+    sen = Sender(sKey, N, g, senInput, h)
     send = sen.computeSender()
-    print("s =", send[0])
-    print("f =", send[1])
-    print("R =", send[2], "\n")
-    primesI = prf(sKey, [13, 3, 5])  # [13, 3, 5] is Sr input
+    primesI = prf(sKey, recIn)
     li = len(primesI)
     x = 0
     while x != li:
