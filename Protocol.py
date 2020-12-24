@@ -4,11 +4,11 @@ from Sender import *
 
 
 def protocol():
-    p = 5
-    q = 17
+    p = 881
+    q = 997
     N = p * q
     g = findGenerator(N)
-    sKey = getRandom(100)
+    sKey = getRandom(1000)
     print("Enter the receiver elements separated by space:")
     recInput = input()
     recIn = list(map(int, recInput.split()))
