@@ -1,51 +1,29 @@
-# import Crypto
-# from Crypto.PublicKey import RSA
-# from Crypto import Random
-from Receiver import Receiver
-from Sender import Sender
-from utils import Random_n_Prime, Random_generators, generat_crs
+from utils import *
+from Receiver import *
+from Sender import *
 
 
-def run_protocol(Sender_set, Receiver_set):
-    # # what is the max size of the U ? we did not understand the idea of PRF to use it fo Large Universe
-    U = max(Sender_set + Receiver_set)
-    print(U)
+def protocol(Sr, senderSet):
+    p = 1021
+    q = 1597
+    N = p * q
+    g = findGenerator(N)
+    print("N is ", N, ", p is ", p, ", q is", q, ", g is", g)
+    for Ss in senderSet:
 
-    # Where we have to use the RSA param?
-    # chose P and Q then Compute N
-    P = 3
-    Q = 11
-    N = P * Q
+        sKey = getRandom(200)
+        receiver = Receiver(sKey, g, N, Sr)
+        # print("PRF are:                ", prf(sKey, Sr))
+        h = receiver.hashReceiver()
+        sender = Sender(sKey, N, g, Ss, h)
+        senderParameters = sender.computeSender()
+        s = senderParameters[0]
+        f = senderParameters[1]
+        R = senderParameters[2]
+        # print("h =", h, ", s =", s, ", f =", f, "\nR =", R, "\n")
+        receiver.checkIntersection(s, f, R)
 
-    """
-    # should we generate l prime? or there is a better Idea?
-    primes = Random_n_Prime(1, U)
-
-    # Is the generator have to be a generator for random i < N
-    g = Random_generators(N)
-
-    primes_string = ""
-    for i in range(U):
-        primes_string += str(primes[i]) + " "
-
-    crs = str(N) + " " + str(g) + " " + primes_string
-    """
-    crs = generat_crs(N, U)
-    print(crs)
-
-    receiver = Receiver(crs, Receiver_set)
-    res = receiver.hashReceiver()
-    r = res[1]
-    h = res[0]
-    sender = Sender(crs, Sender_set, h)
-    result = sender.computeSender()
-    # seed = result[0]
-    # f = result[1]
-    # R = result[2]
-    # i = 0
-    # intersection = receiver.checkIntersection(seed, f, r, i, R)
-
-    return 1
+    return 0
 
 
-run_protocol([7], [0, 3, 4, 7, 9, 10])
+protocol([1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 2, 5, 9])

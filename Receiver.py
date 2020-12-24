@@ -41,5 +41,5 @@ class Receiver:
             # print("ext:", extractor)
             if extractor == R:
                 print("There is an intersection with index:", i)
-            else:
-                print("No intersection with index", i)
+            # else:
+            #     print("No intersection with index", i)
