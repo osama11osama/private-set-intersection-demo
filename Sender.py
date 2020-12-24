@@ -16,7 +16,7 @@ class Sender:
         :return: returns a list composed of s, f, Ext
         """
         primes = prf(self.secretKey, [self.w])
-        print("the prime in Sender is :", primes)
+        # print("the prime in Sender is :", primes)
         Roh = getRandom(self.N)
         s = getRandom(self.N)
         # f = int(self.g) ** int((Roh * primes[0]))
