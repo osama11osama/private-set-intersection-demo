@@ -3,22 +3,17 @@ from Receiver import *
 from Sender import *
 
 
-def protocol():
+def protocol(Sr, Ss):
     p = 881
     q = 997
     N = p * q
     g = findGenerator(N)
     sKey = getRandom(1000)
-    print("Enter the receiver elements separated by space:")
-    recInput = input()
-    recIn = list(map(int, recInput.split()))
-    receiver = Receiver(sKey, g, N, recIn)
+    receiver = Receiver(sKey, g, N, Sr)
     h = receiver.hashReceiver()
-    print("Enter the sender element:")
-    senInput = input()
-    sen = Sender(sKey, N, g, senInput, h)
+    sen = Sender(sKey, N, g, Ss, h)
     send = sen.computeSender()
-    primesI = prf(sKey, recIn)
+    primesI = prf(sKey, Sr)
     li = len(primesI)
     x = 0
     while x != li:
@@ -27,4 +22,14 @@ def protocol():
     return 0
 
 
-protocol()
+print("Enter the receiver elements separated by space:")
+recInput = input()
+recIn = list(map(int, recInput.split()))
+
+print("Enter the sender element:")
+senInput = input()
+senIn = list(map(int, senInput.split()))
+
+for i in senIn:
+    protocol(recIn, i)
+
