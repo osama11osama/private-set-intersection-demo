@@ -1,7 +1,6 @@
-from numpy import *
 from sympy import *
 from Crypto.Hash import HMAC, SHA256
-from cryptohash import sha256
+import random
 
 
 def getRandom(seed):
@@ -16,11 +15,11 @@ def gcd(a, b):
 
 
 def findGenerator(N):
-    list = []
-    for i in range(1, N):
-        if gcd(N, i) == 1:
-            list.append(i)
-    return random.choice(list)
+    tmp = getRandom(N)
+    if gcd(tmp, N) == 1:
+        return tmp
+    else:
+        return findGenerator(N)
 
 
 def prf(secretKey, elementsSet):
@@ -32,7 +31,6 @@ def prf(secretKey, elementsSet):
         element = str(i).encode('utf-8')
         HMac.update(element)
         tmp = int(HMac.hexdigest(), 16)
-        tmp2 = (tmp / (10 ** 75))  # make hashing smaller for temporary
         pr = nextprime(tmp)
         res.append(pr)
     return res
