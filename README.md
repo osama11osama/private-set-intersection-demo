@@ -4,10 +4,13 @@
 
 Developed as a **Cybersecurity (CySec) course project** at Saarland University (2020). The protocol lets two parties discover whether their datasets share common elements **without revealing non-matching items**.
 
+> **New to the project?** Read **[OVERVIEW.md](OVERVIEW.md)** for a plain-language explanation and real-world use cases — no math or technical details.
+
 ---
 
 ## Table of Contents
 
+- [Plain-language guide](OVERVIEW.md) *(overview & use cases)*
 - [Overview](#overview)
 - [Problem Statement](#problem-statement)
 - [How It Works](#how-it-works)
@@ -20,7 +23,7 @@ Developed as a **Cybersecurity (CySec) course project** at Saarland University (
 - [API Reference](#api-reference)
 - [Security Model & Limitations](#security-model--limitations)
 - [Related Work](#related-work)
-- [Contributors](#contributors)
+- [Authors](#authors)
 
 ---
 
@@ -35,6 +38,8 @@ Developed as a **Cybersecurity (CySec) course project** at Saarland University (
 | **Primitives** | HMAC-SHA256 PRF, modular exponentiation, SHA3-256 extractor |
 
 This repository implements a research-paper-style security protocol in four modules: shared utilities, a Receiver, a Sender, and an interactive driver script.
+
+See **[OVERVIEW.md](OVERVIEW.md)** for everyday examples (contact discovery, fraud screening, etc.) explained without cryptography.
 
 ---
 
@@ -338,14 +343,11 @@ The **PRF-to-prime + product-exponentiation** construction in this project is a 
 
 ---
 
-## Contributors
+## Authors
 
-| Contributor | Role |
-|-------------|------|
-| Abdullah Malallah | Core protocol implementation (Uni Saarland) |
-| Osama | Integration, testing, repository maintenance |
+**Abdullah Malallah** · **Osama**
 
-**Timeline:** Initial prototype — December 2020 · CySec course project
+Co-authors with equal contribution. Protocol design, implementation, and testing were done together as a CySec course project at Saarland University (December 2020).
 
 ---
 
