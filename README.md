@@ -201,8 +201,8 @@ Project_PCI/
 
 ```bash
 # Clone the repository
-git clone https://github.com/osama11osama/Project_sch.git
-cd Project_sch
+git clone https://github.com/osama11osama/private-set-intersection-demo.git
+cd private-set-intersection-demo
 
 # Install dependencies
 pip install sympy pycryptodome
